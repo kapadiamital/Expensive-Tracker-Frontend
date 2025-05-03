@@ -333,7 +333,7 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
     try {
       // Increment the selected date by one day
       const selectedDate = new Date(values.date);
-      selectedDate.setDate(selectedDate.getDate() + 1);
+      selectedDate.setDate(selectedDate.getDate());
       const adjustedDate = selectedDate.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
 
       const transactionData = {

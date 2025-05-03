@@ -331,12 +331,17 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (values, { resetForm }) => {
     setIsSubmitting(true);
     try {
+      // Increment the selected date by one day
+      const selectedDate = new Date(values.date);
+      selectedDate.setDate(selectedDate.getDate() + 1);
+      const adjustedDate = selectedDate.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
+
       const transactionData = {
         ...values,
         amount: parseFloat(values.amount),
-        date: values.date ? new Date(values.date).toISOString() : null,
+        date: adjustedDate, // Send the adjusted date
       };
-      
+      console.log('Sending transaction data to backend:', transactionData); // Debug log
       await addTransaction(transactionData);
       resetForm();
       onClose();

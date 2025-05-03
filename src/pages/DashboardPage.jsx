@@ -91,17 +91,17 @@ const StatsContainer = styled.div`
 const StatCard = styled(motion.div)`
   background: #ffffff;
   border: 1px solid #d1d9e6;
-  border-radius: 1rem; /* Increased border radius for a smoother look */
-  padding: 1.25rem; /* Slightly increased padding */
+  border-radius: 1rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Added box shadow for depth */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-5px); /* Slightly more lift on hover */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   }
 
   @media (max-width: 768px) {
@@ -117,12 +117,12 @@ const StatHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem; /* Increased margin for better spacing */
+  margin-bottom: 0.75rem;
 `;
 
 const StatTitle = styled.h3`
-  font-size: 1rem; /* Slightly larger font size */
-  font-weight: 600; /* Bolder font weight */
+  font-size: 1rem;
+  font-weight: 600;
   color: #666;
 
   @media (max-width: 768px) {
@@ -135,7 +135,7 @@ const StatTitle = styled.h3`
 `;
 
 const StatIconContainer = styled.div`
-  width: 36px; /* Slightly larger icon container */
+  width: 36px;
   height: 36px;
   border-radius: 50%;
   display: flex;
@@ -161,7 +161,7 @@ const StatIconContainer = styled.div`
 `;
 
 const StatValue = styled.div`
-  font-size: 1.75rem; /* Increased font size for better visibility */
+  font-size: 1.75rem;
   font-weight: 700;
   color: #333;
 
@@ -178,7 +178,7 @@ const StatChange = styled.div`
   display: flex;
   align-items: center;
   gap: 0.2rem;
-  font-size: 0.85rem; /* Slightly larger font size */
+  font-size: 0.85rem;
   color: ${({ $isPositive }) => ($isPositive ? '#28a745' : '#dc3545')};
 
   @media (max-width: 768px) {
@@ -465,6 +465,9 @@ const DashboardPage = () => {
     );
   }
 
+  // Log transactions being passed to TransactionList
+  console.log('Transactions passed to TransactionList in Dashboard:', transactions);
+
   return (
     <DashboardContainer>
       <Header
@@ -623,7 +626,7 @@ const DashboardPage = () => {
           <TransactionList
             transactions={transactions.slice(0, 5)}
             compact
-            hideActions={true} // Add prop to hide edit and delete buttons
+            hideActions={true}
           />
         </DashboardCard>
       </DashboardContent>

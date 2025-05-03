@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FiEdit } from 'react-icons/fi';
-import { formatCurrency, formatDate } from '../../utils/formatters';
+import { formatCurrency } from '../../utils/formatters';
 import { TRANSACTION_CATEGORIES } from '../../utils/constants';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
@@ -83,6 +83,22 @@ const TransactionList = ({ transactions = [], onEditTransaction, hideActions = f
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [transactionToDelete, setTransactionToDelete] = useState(null);
 
+  const formatDate = (dateInput) => {
+    try {
+      const date = new Date(dateInput);
+      if (isNaN(date.getTime())) {
+        return 'Invalid Date';
+      }
+      const year = date.getUTCFullYear();
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+      const day = String(date.getUTCDate()).padStart(2, '0');
+      return `${month}/${day}/${year}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid Date';
+    }
+  };
+
   const confirmDelete = async () => {
     try {
       await onEditTransaction?.({ _id: transactionToDelete, action: 'delete' });
@@ -94,6 +110,8 @@ const TransactionList = ({ transactions = [], onEditTransaction, hideActions = f
     }
   };
 
+  console.log('Transactions in TransactionList:', transactions);
+
   if (transactions.length === 0) {
     return (
       <EmptyState>
@@ -102,10 +120,17 @@ const TransactionList = ({ transactions = [], onEditTransaction, hideActions = f
     );
   }
 
+  // Sort transactions by date in descending order (newest first)
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   return (
     <>
       <TransactionListContainer>
-        {transactions.map((transaction) => {
+        {sortedTransactions.map((transaction) => {
           const categoryList =
             transaction.type === 'income' ? TRANSACTION_CATEGORIES.INCOME : TRANSACTION_CATEGORIES.EXPENSE;
           const categoryName =

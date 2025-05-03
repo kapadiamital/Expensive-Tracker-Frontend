@@ -120,8 +120,12 @@ const TransactionList = ({ transactions = [], onEditTransaction, hideActions = f
     );
   }
 
-  // Sort transactions by date in descending order (newest first)
+  // Sort transactions by _id in descending order (LIFO), with date as secondary sort
   const sortedTransactions = [...transactions].sort((a, b) => {
+    // Primary sort: descending _id (newest first)
+    const idComparison = b._id.localeCompare(a._id);
+    if (idComparison !== 0) return idComparison;
+    // Secondary sort: descending date
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return dateB - dateA;

@@ -449,6 +449,15 @@ const DashboardPage = () => {
     return data.filter((d) => d.value > 0);
   };
 
+  // Sort transactions by _id in descending order (LIFO), with date as secondary sort
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    const idComparison = b._id.localeCompare(a._id);
+    if (idComparison !== 0) return idComparison;
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   const chartData = getChartData();
   const total = activeTab === 'expense' ? stats.expenses : stats.income;
 
@@ -465,8 +474,8 @@ const DashboardPage = () => {
     );
   }
 
-  // Log transactions being passed to TransactionList
-  console.log('Transactions passed to TransactionList in Dashboard:', transactions);
+  // Log sorted transactions being passed to TransactionList
+  console.log('Sorted transactions passed to TransactionList in Dashboard:', sortedTransactions);
 
   return (
     <DashboardContainer>
@@ -591,7 +600,7 @@ const DashboardPage = () => {
               <FiTrendingUp size={14} /> Income vs Expense
             </TabButton>
           </TabsContainer>
-          <ExpenseChart transactions={transactions} activeTab={activeTab} />
+          <ExpenseChart transactions={sortedTransactions} activeTab={activeTab} />
           <LegendContainer>
             {chartData.map((item) => (
               <LegendItem key={item.name}>
@@ -624,7 +633,7 @@ const DashboardPage = () => {
             </ViewAllButton>
           </CardHeader>
           <TransactionList
-            transactions={transactions.slice(0, 5)}
+            transactions={sortedTransactions.slice(0, 5)}
             compact
             hideActions={true}
           />
